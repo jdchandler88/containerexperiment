@@ -3,3 +3,4 @@
 
 #maven
 **/target
+/services/SimpleService/target/
