@@ -1,0 +1,5 @@
+#netbeans
+**/nbprivate
+
+#maven
+**/target
