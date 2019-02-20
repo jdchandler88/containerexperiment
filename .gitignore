@@ -4,3 +4,8 @@
 #maven
 **/target
 /services/SimpleService/target/
+
+#gradle
+**/gradle
+**/bin
+**/build
