@@ -9,3 +9,5 @@
 **/gradle
 **/bin
 **/build
+**/.gradle
+**/.project
