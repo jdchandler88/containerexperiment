@@ -5,6 +5,7 @@
  */
 package com.mycompany.simpleservice;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 /**
@@ -13,5 +14,11 @@ import javax.ws.rs.Path;
  */
 @Path("")
 public class SimpleService {
+ 
+    @Path("")
+    @GET
+    public String getSimple() {
+        return "oh hai there!";
+    }
     
 }
