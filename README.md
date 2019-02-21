@@ -9,6 +9,6 @@ This is an experiment/overview of a microservice app. It will be managed by Dock
 ## Repository Structure
 
 * root: repo root
-  * docker-compose.yml: describes microservice app
+  * docker-compose.yml: describes entire microservice app
   * services: contains data service source and Dockerfile
-    * folder: contains Dockerfile and Maven JavaEE project
+    * folder: contains Dockerfile and Gradle War project
