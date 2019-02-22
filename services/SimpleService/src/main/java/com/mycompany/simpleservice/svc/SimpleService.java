@@ -3,10 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.simpleservice;
+package com.mycompany.simpleservice.svc;
 
+import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+
+import com.mycompany.simpleservice.evt.Publisher;
 
 /**
  *
@@ -15,9 +18,13 @@ import javax.ws.rs.Path;
 @Path("")
 public class SimpleService {
  
+	@EJB
+	private Publisher publisher;
+	
     @Path("")
     @GET
     public String getSimple() {
+    	publisher.publish();
         return "oh hai there!";
     }
     

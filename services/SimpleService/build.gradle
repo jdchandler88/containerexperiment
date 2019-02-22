@@ -22,11 +22,17 @@ apply plugin: 'maven-publish'
 // In this section you declare where to find the dependencies of your project
 repositories {
     mavenCentral()
+    maven {
+    	url 'https://maven.repository.redhat.com/ga/'
+    }
 }
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
     compile 'javax:javaee-api:7.0'
+    compile 'org.apache.activemq:activemq-all:5.15.8'
+    compile 'junit:junit:4.12'
+    compile 'org.jboss.ejb3:jboss-ejb3-ext-api:2.1.0.redhat-1'
 }
 
 build.finalizedBy war

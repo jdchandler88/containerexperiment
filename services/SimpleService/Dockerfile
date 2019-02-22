@@ -1,19 +1,22 @@
 # dockerfile to build image for JBoss EAP 7.1
 
 #start from eap71-openshift
-FROM registry.access.redhat.com/jboss-eap-7/eap71-openshift
+FROM jboss/wildfly
 
 # file author / maintainer
 MAINTAINER "FirstName LastName" "emailaddress@gmail.com"
 
-# Copy war to deployments folder
-COPY build/libs/SimpleService.war $JBOSS_HOME/standalone/deployments/
+#copy service
+ADD build/libs/SimpleService.war .
+
+# start server so that we can configure it
+ADD startJboss.sh .
 
 # User root to modify war owners
 USER root
-
-# Modify owners war
-RUN chown jboss:jboss $JBOSS_HOME/standalone/deployments/SimpleService.war
+RUN chmod +x ./startJboss.sh
+USER jboss
+RUN ./startJboss.sh
 
 # Important, use jboss user to run image
 USER jboss
