@@ -30,9 +30,12 @@ repositories {
 // In this section you declare the dependencies for your production and test code
 dependencies {
     compile 'javax:javaee-api:7.0'
-    compile 'org.apache.activemq:activemq-all:5.15.8'
     compile 'junit:junit:4.12'
-    compile 'org.jboss.ejb3:jboss-ejb3-ext-api:2.1.0.redhat-1'
+    //compile 'org.jboss:jboss-remote-naming:2.0.5.Final'
+    compile 'org.wildfly:wildfly-naming-client:1.0.9.Final'
+    compile 'org.jboss.xnio:xnio-nio:3.6.5.Final'
+    compile 'org.apache.activemq:artemis-jms-client:2.6.4'
+    compile 'org.jboss.xnio.netty:netty-xnio-transport:0.1.6.Final'
 }
 
 build.finalizedBy war

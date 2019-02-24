@@ -1,5 +1,7 @@
 package com.mycompany.simpleservice.evt;
 
+import java.util.Properties;
+
 import javax.ejb.Stateless;
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
@@ -7,29 +9,33 @@ import javax.jms.Destination;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-
-import org.apache.activemq.ActiveMQConnectionFactory;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 
 @Stateless
 public class Publisher {
 
 	public void publish() {
 		try {
-            // Create a ConnectionFactory
-            ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+			Properties props = new Properties();
+			props.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
+			props.put(Context.PROVIDER_URL, "http-remoting://localhost:8081");
+			InitialContext context = new InitialContext(props);
+			
+
+			javax.jms.Topic topic = (javax.jms.Topic)context.lookup("jms/topic/EventTopic");
+			
+			javax.jms.ConnectionFactory connectionFactory = (javax.jms.ConnectionFactory)context.lookup("jms/RemoteConnectionFactory");
 
             // Create a Connection
-            Connection connection = connectionFactory.createConnection();
+            Connection connection = connectionFactory.createConnection("guest", "butt");
             connection.start();
 
             // Create a Session
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-            // Create the destination (Topic or Queue)
-            Destination destination = session.createTopic("AnotherTopic");
-
             // Create a MessageProducer from the Session to the Topic or Queue
-            MessageProducer producer = session.createProducer(destination);
+            MessageProducer producer = session.createProducer(topic);
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
             // Create a messages

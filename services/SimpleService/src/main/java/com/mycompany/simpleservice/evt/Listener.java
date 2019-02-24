@@ -6,13 +6,19 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
-import org.jboss.ejb3.annotation.ResourceAdapter;
+@MessageDriven(
 
-@MessageDriven(activationConfig= {
-		@ActivationConfigProperty(propertyName="providerURL", propertyValue="http://localhost:61616"),
-		@ActivationConfigProperty(propertyName="destinationType", propertyValue="javax.jms.Topic"),
-		@ActivationConfigProperty(propertyName="destination", propertyValue="EventTopic")
-})
+	    name = "EventMDB",
+
+	    activationConfig = {
+
+	        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
+
+	        @ActivationConfigProperty(propertyName = "destination", propertyValue = "jboss/exported/jms/topic/EventTopic"),
+
+	        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
+
+	    })
 public class Listener implements MessageListener {
 
 	@Override

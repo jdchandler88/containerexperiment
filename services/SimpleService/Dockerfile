@@ -10,13 +10,13 @@ MAINTAINER "FirstName LastName" "emailaddress@gmail.com"
 ADD build/libs/SimpleService.war .
 
 # start server so that we can configure it
-ADD startJboss.sh .
+ADD configureServer.sh .
 
 # User root to modify war owners
 USER root
-RUN chmod +x ./startJboss.sh
+RUN chmod +x ./configureServer.sh 
 USER jboss
-RUN ./startJboss.sh
+RUN ./configureServer.sh standalone standalone-full.xml
 
 # Important, use jboss user to run image
 USER jboss
