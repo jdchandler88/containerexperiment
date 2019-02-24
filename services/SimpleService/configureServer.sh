@@ -20,13 +20,6 @@ echo "=> Server started..."
 
 echo "=> Configuring JMS"
 
-
-echo "=> Deploying Service"
-ls
-pwd
-`$JBOSS_CLI -c "deploy SimpleService.war" > out.txt`
-cat out.txt
-
 echo "=> Shutting down WildFly"
 if [ "$JBOSS_MODE" = "standalone" ]; then
   $JBOSS_CLI -c ":shutdown"

@@ -6,8 +6,7 @@ FROM jboss/wildfly
 # file author / maintainer
 MAINTAINER "FirstName LastName" "emailaddress@gmail.com"
 
-#copy service
-ADD build/libs/SimpleService.war .
+
 
 # start server so that we can configure it
 ADD configureServer.sh .
@@ -18,5 +17,9 @@ RUN chmod +x ./configureServer.sh
 USER jboss
 RUN ./configureServer.sh standalone standalone-full.xml
 
-# Important, use jboss user to run image
-USER jboss
+#copy service
+ADD build/libs/SimpleService.war .
+#deploy service
+RUN mv SimpleService.war $JBOSS_HOME/standalone/deployments
+
+ENTRYPOINT $JBOSS_HOME/bin/standalone.sh -c standalone-full.xml -b $HOSTNAME -bmanagement $HOSTNAME
