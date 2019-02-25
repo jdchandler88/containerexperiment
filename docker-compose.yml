@@ -1,10 +1,15 @@
 version: "3"
 services:
+  ui:
+    build: services/ui
+    networks: 
+      - frontend
+    ports:
+      - "80:80"
   simple:
     # replace username/repo:tag with your name and image details
     build: services/SimpleService
     command: --hostname simple-service-server
-    image: username/repo:tag
     deploy:
       replicas: 5
       resources:
@@ -23,5 +28,6 @@ services:
     ports: 
       - "8081:8080"
 networks:
+  frontend:
   webnet:
 

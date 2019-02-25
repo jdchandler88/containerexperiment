@@ -23,5 +23,10 @@ This is an experiment/overview of a microservice app. It will be managed by Dock
     * http://activemq.apache.org/using-activemq-with-ejb3-jboss-example.html - ActiveMQ JBOSS Message-Driven Bean example
     * https://developer.jboss.org/thread/229884 - JBOSS Resource Adapter import; compile dependency containing this annotation
   * -b 0.0.0.0 does not work inside the Docker container for an http listener. The http listener needs a concrete bind point. Therefore, in the jms service, the container is built to listen to its external network.
+* JMS Wildfly
+  * No security configured. This is true of both the JMS server and the remoting interface.
+* UI
+  * Built using Vue
+  * Served using HTTPD Docker image
 
 
