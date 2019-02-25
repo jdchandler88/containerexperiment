@@ -15,6 +15,18 @@ import javax.naming.InitialContext;
 @Stateless
 public class Publisher {
 
+	private static final String DEFAULT_INITIAL_CONTEXT_FACTORY = "org.jboss.naming.remote.client.InitialContextFactory";
+	
+	private static final String DEFAULT_CONTEXT_LOOKUP_PROTOCOL = "http-remoting";
+	
+	private static final String DEFAULT_JMS_HOST = "jms";
+	
+	private static final String DEFAULT_JMS_PORT = "8080";
+	
+	private static final String DEFAULT_JMS_CONNECTION_FACTORY_JNDI_NAME = "jms/RemoteConnectionFactory";
+	
+	private static final String DEFAULT_JMS_TOPIC_JNDI_NAME = "jms/topic/EventTopic";
+	
 	private String initialContextFactory;
 
 	private String initialContextLookupProtocol;
@@ -31,16 +43,16 @@ public class Publisher {
 	
 	@PostConstruct
 	public void init() {
-		initialContextFactory = System.getProperty("INITIAL_CONTEXT_FACTORY", "\"org.jboss.naming.remote.client.InitialContextFactory");
-		initialContextLookupProtocol = System.getProperty("CONTEXT_LOOKUP_PROTOCOL", "http-remoting");
-		jmsHost = System.getProperty("JMS.HOST", "jms");
-		jmsPort = System.getProperty("JMS.PORT", "8080");
-		remoteConnectionFactoryJndiName = System.getProperty("JMS.CONNECTION.FACTORY.JNDI.NAME", "jms/RemoteConnectionFactory");
-		topicJndiName = System.getProperty("JMS.TOPIC.JNDI.NAME", "jms/topic/EventTopic");
+		initialContextFactory = System.getProperty("INITIAL.CONTEXT.FACTORY", DEFAULT_INITIAL_CONTEXT_FACTORY);
+		initialContextLookupProtocol = System.getProperty("CONTEXT.LOOKUP.PROTOCOL", DEFAULT_CONTEXT_LOOKUP_PROTOCOL);
+		jmsHost = System.getProperty("JMS.HOST", DEFAULT_JMS_HOST);
+		jmsPort = System.getProperty("JMS.PORT", DEFAULT_JMS_PORT);
+		remoteConnectionFactoryJndiName = System.getProperty("JMS.CONNECTION.FACTORY.JNDI.NAME", DEFAULT_JMS_CONNECTION_FACTORY_JNDI_NAME);
+		topicJndiName = System.getProperty("JMS.TOPIC.JNDI.NAME", DEFAULT_JMS_TOPIC_JNDI_NAME);
 		providerUrl = initialContextLookupProtocol + "://" + jmsHost + ":" + jmsPort;
 	}
 	
-	public void publish() {
+	public void publish(String messageText) {
 		try {
 			Properties props = new Properties();
 			props.put(Context.INITIAL_CONTEXT_FACTORY, initialContextFactory);
@@ -64,11 +76,10 @@ public class Publisher {
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
             // Create a messages
-            String text = "Hello world! From: " + Thread.currentThread().getName() + " : " + this.hashCode();
-            TextMessage message = session.createTextMessage(text);
+            TextMessage message = session.createTextMessage(messageText);
 
             // Tell the producer to send the message
-            System.out.println("Sent message: "+ message.hashCode() + " : " + Thread.currentThread().getName());
+            System.out.println("Sent message: "+ message.hashCode() + " : " + Thread.currentThread().getName() + "---" + messageText);
             producer.send(message);
 
             // Clean up

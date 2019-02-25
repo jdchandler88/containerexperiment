@@ -18,7 +18,10 @@ wait_for_server
 
 echo "=> Server started..."
 
-echo "=> Configuring JMS"
+echo "=> Adding configuration module"
+CONFIG_DIR=$JBOSS_HOME/modules/com/mycompany/configuration/main
+mkdir $CONFIG_DIR
+mv module.xml $CONFIG_DIR
 
 echo "=> Shutting down WildFly"
 if [ "$JBOSS_MODE" = "standalone" ]; then

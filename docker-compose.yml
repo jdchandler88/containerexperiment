@@ -3,7 +3,7 @@ services:
   ui:
     build: services/ui
     networks: 
-      - frontend
+      - webnet
     ports:
       - "80:80"
   simple:
@@ -24,9 +24,10 @@ services:
       - webnet
   jms:
     build: infrastructure/jms
-    command: --hostname jms-machine
     ports: 
       - "8081:8080"
+    networks:
+      - webnet
 networks:
   frontend:
   webnet:

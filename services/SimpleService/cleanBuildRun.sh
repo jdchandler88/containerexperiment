@@ -1,6 +1,6 @@
 # convenience file for building simpleservice container
 #remove named container from docker cache
-docker rm service
+docker rm simple-service
 
 #build fresh instance
 gradle clean build && docker build -t simple-service .

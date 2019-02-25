@@ -6,7 +6,7 @@ public class PublisherTest {
 
 	@Test
 	public void test() {
-		new Publisher().publish();
+		new Publisher().publish("hello world!");
 	}
 	
 }

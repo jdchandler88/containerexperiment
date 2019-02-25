@@ -7,6 +7,7 @@ package com.mycompany.simpleservice.svc;
 
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
 import com.mycompany.simpleservice.evt.Publisher;
@@ -24,8 +25,13 @@ public class SimpleService {
     @Path("")
     @GET
     public String getSimple() {
-    	publisher.publish();
         return "oh hai there!";
+    }
+    
+    @Path("")
+    @POST
+    public void publishMessage(String message) {
+    	publisher.publish(message);
     }
     
 }

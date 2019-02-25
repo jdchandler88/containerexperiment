@@ -1,17 +1,39 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <input v-model="message"/>
+    <button @click="publishMessage">Publish</button>
+    <button id="btn" @click="getResponse">Get Response</button>
+    <label for="btn">{{response}}</label>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import axios from 'axios';
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  data: function() {
+    return {
+      message: "Default message",
+      response: ""
+    }
+  },
+  methods: {
+    publishMessage() {
+      axios.post("http://localhost:8080/api/simple", this.message)
+      .then(result => {
+        console.log("SUCCESS: ", result);
+      }).catch(error => {
+        console.log("ERROR: ", error);
+      });
+    },
+    getResponse() {
+      axios.get("http://localhost:8080/api/simple")
+        .then(result=> {
+          this.response = result.data
+        }).catch(error=> {
+          console.log("ERROR: ", error);
+        })
+    }
   }
 }
 </script>
