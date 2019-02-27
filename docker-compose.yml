@@ -34,21 +34,35 @@ services:
       - "8080"
     networks:
       - webnet
-  db:
+  keycloakdb:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     expose:
       - "3306"
     restart: always
     environment: 
-      MYSQL_ROOT_PASSWORD: password
+      - MYSQL_DATABASE=keycloak
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=keycloakuser
+      - MYSQL_PASSWORD=keycloakuserpassword
     volumes:
-      - "dbdata:/var/lib/mysql"
+      - "keycloakdbdata:/var/lib/mysql"
     networks:
       - webnet
+  keycloak:
+    image: jboss/keycloak
+    networks:
+      - webnet
+    environment:
+      - MYSQL_ADDR=keycloakdb
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloakuser
+      - DB_PASSWORD=keycloakuserpassword
+    depends_on:
+      - keycloakdb
 networks:
   frontend:
   webnet:
 volumes:
-  dbdata:
+  keycloakdbdata:
 
