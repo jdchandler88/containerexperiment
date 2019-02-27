@@ -19,7 +19,8 @@ export default {
   },
   methods: {
     publishMessage() {
-      axios.post("http://localhost:8080/api/simple", this.message)
+      console.log("URL: " + this.simpleServiceUrl);
+      axios.post(this.simpleServiceUrl, this.message)
       .then(result => {
         console.log("SUCCESS: ", result);
       }).catch(error => {
@@ -27,12 +28,17 @@ export default {
       });
     },
     getResponse() {
-      axios.get("http://localhost:8080/api/simple")
+      axios.get(this.simpleServiceUrl)
         .then(result=> {
           this.response = result.data
         }).catch(error=> {
           console.log("ERROR: ", error);
         })
+    }
+  },
+  computed: {
+    simpleServiceUrl() {
+      return process.env.VUE_APP_SIMPLE_SERVICE_HOST  + process.env.VUE_APP_SIMPLE_SERVICE_PATH;
     }
   }
 }
