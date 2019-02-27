@@ -34,7 +34,19 @@ services:
       - "8080"
     networks:
       - webnet
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment: 
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - "dbdata:/var/lib/mysql"
+    networks:
+      - webnet
 networks:
   frontend:
   webnet:
+volumes:
+  dbdata:
 
