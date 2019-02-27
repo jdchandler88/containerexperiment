@@ -4,12 +4,11 @@ services:
     build: services/ui
     networks: 
       - webnet
-    ports:
-      - "80:80"
+    expose:
+      - "80"
   simple:
     # replace username/repo:tag with your name and image details
     build: services/SimpleService
-    command: --hostname simple-service-server
     deploy:
       replicas: 5
       resources:
@@ -18,14 +17,21 @@ services:
           memory: 50M
       restart_policy:
         condition: on-failure
-    ports:
-      - "8080:8080"
+    expose: 
+      - "8080"
     networks:
+      - webnet
+  proxy:
+    build: infrastructure/proxy
+    ports:
+      - "80:80"
+    networks: 
+      - frontend
       - webnet
   jms:
     build: infrastructure/jms
-    ports: 
-      - "8081:8080"
+    expose:
+      - "8080"
     networks:
       - webnet
 networks:
