@@ -1,4 +1,14 @@
-# dockerfile to build image for JBoss EAP 7.1
+#dockerfile that builds the software and then deploys it to jboss
+
+#build the software
+FROM gradle:5.2.1-jdk8 as builder
+USER root
+RUN mkdir /app
+RUN chown -R gradle /app 
+USER gradle
+ADD . /app
+WORKDIR /app
+RUN gradle clean build --info
 
 #start from eap71-openshift
 FROM jboss/wildfly
@@ -7,14 +17,6 @@ FROM jboss/wildfly
 MAINTAINER "FirstName LastName" "emailaddress@gmail.com"
 
 #copy service
-ADD build/libs/SimpleService.war .
-#deploy service
-RUN mv SimpleService.war $JBOSS_HOME/standalone/deployments
-
-## copy configuration to appropriate space
-#ARG configdir=$JBOSS_HOME/modules/com/mycompany/configuration/main
-#RUN mkdir -p $configdir
-#ADD module.xml $configdir
-#ADD config/$DEV_ENV/app.properties $configdir
+COPY --from=builder /app/build/libs/SimpleService.war $JBOSS_HOME/standalone/deployments
 
 ENTRYPOINT $JBOSS_HOME/bin/standalone.sh -c standalone-full.xml -b $HOSTNAME -bmanagement $HOSTNAME
