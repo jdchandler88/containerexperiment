@@ -28,6 +28,10 @@ services:
     networks: 
       - frontend
       - webnet
+    depends_on:
+      - ui
+      - keycloak
+      - simple
   jms:
     build: infrastructure/jms
     expose:
