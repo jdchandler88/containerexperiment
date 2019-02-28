@@ -64,6 +64,8 @@ services:
       - DB_DATABASE=keycloak
       - DB_USER=keycloakuser
       - DB_PASSWORD=keycloakuserpassword
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin123
     depends_on:
       - keycloakdb
 networks:
