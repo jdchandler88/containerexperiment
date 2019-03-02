@@ -16,7 +16,9 @@ import javax.jms.MessageListener;
 
 	        @ActivationConfigProperty(propertyName = "destination", propertyValue = "jboss/exported/jms/topic/EventTopic"),
 
-	        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
+	        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge"),
+	        
+	        @ActivationConfigProperty(propertyName = "connectionParameters", propertyValue="host=jms;port=8080")
 
 	    })
 public class Listener implements MessageListener {

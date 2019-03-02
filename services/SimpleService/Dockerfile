@@ -4,11 +4,11 @@
 FROM gradle:5.2.1-jdk8 as builder
 USER root
 RUN mkdir /app
+ADD . /app
 RUN chown -R gradle /app 
 USER gradle
-ADD . /app
 WORKDIR /app
-RUN gradle clean build --info
+RUN gradle clean build --stacktrace
 
 #start from eap71-openshift
 FROM jboss/wildfly
