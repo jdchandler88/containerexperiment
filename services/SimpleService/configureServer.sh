@@ -17,6 +17,9 @@ echo "=> Waiting for the server to boot"
 wait_for_server
 
 echo "=> Server started..."
+`$JBOSS_CLI -c "/subsystem=messaging-activemq/server=default/jms-topic=EventTopic:add(entries=[jms/topic/EventTopic])"`
+`$JBOSS_CLI -c "/subsystem=messaging-activemq/jms-bridge=jmsbridge:add(quality-of-service=AT_MOST_ONCE, failure-retry-interval=500, max-retries=1, max-batch-size=10, max-batch-time=100, source-connection-factory=ConnectionFactory, source-destination=jms/topic/EventTopic, target-connection-factory=jms/RemoteConnectionFactory, target-destination=jms/topic/EventTopic, target-context={javax.naming.factory.initial=org.jboss.naming.remote.client.InitialContextFactory, java.naming.provider=http-remoting://jms:8080})"`
+
 
 echo "=> Adding configuration module"
 CONFIG_DIR=$JBOSS_HOME/modules/com/mycompany/configuration/main
