@@ -3,9 +3,12 @@ package com.mycompany.simpleservice.evt;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
+import javax.jms.Destination;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
@@ -52,27 +55,43 @@ public class Publisher {
 		providerUrl = initialContextLookupProtocol + "://" + jmsHost + ":" + jmsPort;
 	}
 	
+	@Resource(lookup = "java:/jms/topic/EventTopic")
+	private Destination destination;
+	
+	@Resource(lookup = "java:/ConnectionFactory")
+	private ConnectionFactory cxf;
+	
 	public void publish(String messageText) {
+		
+		
 		try {
-			Properties props = new Properties();
-			props.put(Context.INITIAL_CONTEXT_FACTORY, initialContextFactory);
-			props.put(Context.PROVIDER_URL, providerUrl);
-			InitialContext context = new InitialContext(props);
+//			Properties props = new Properties();
+//			props.put(Context.INITIAL_CONTEXT_FACTORY, initialContextFactory);
+//			props.put(Context.PROVIDER_URL, providerUrl);
+//			InitialContext context = new InitialContext(props);
+//			
+// 
+//			javax.jms.Topic topic = (javax.jms.Topic)context.lookup(topicJndiName);
+//			
+//			javax.jms.ConnectionFactory connectionFactory = (javax.jms.ConnectionFactory)context.lookup(remoteConnectionFactoryJndiName);
+//
+//			
+//			
+//            // Create a Connection
+//            Connection connection = connectionFactory.createConnection();
 			
-
-			javax.jms.Topic topic = (javax.jms.Topic)context.lookup(topicJndiName);
+			System.out.println("DESTINATION::::::::::::::::" + destination);
+			System.out.println("CONNECTIONFACTORY:::::::::::" + cxf);
 			
-			javax.jms.ConnectionFactory connectionFactory = (javax.jms.ConnectionFactory)context.lookup(remoteConnectionFactoryJndiName);
-
-            // Create a Connection
-            Connection connection = connectionFactory.createConnection();
+			Connection connection = cxf.createConnection();
             connection.start();
 
             // Create a Session
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
             // Create a MessageProducer from the Session to the Topic or Queue
-            MessageProducer producer = session.createProducer(topic);
+            MessageProducer producer = session.createProducer(destination);
+//            MessageProducer producer = session.createProducer(topic);
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
             // Create a messages

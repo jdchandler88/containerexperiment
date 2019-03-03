@@ -16,6 +16,13 @@ FROM jboss/wildfly
 # file author / maintainer
 MAINTAINER "FirstName LastName" "emailaddress@gmail.com"
 
+#configure server to use JMS bridge TODO: pass in parameters (remote host, remote topic, etc.)
+COPY configureServer.sh .
+USER root
+RUN chmod +x configureServer.sh
+USER jboss
+RUN ./configureServer.sh standalone standalone-full.xml
+
 #copy service
 COPY --from=builder /app/build/libs/SimpleService.war $JBOSS_HOME/standalone/deployments
 
