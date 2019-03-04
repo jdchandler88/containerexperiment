@@ -14,8 +14,19 @@
   import axios from 'axios'
   export default {
     data: () => ({
-      message: "Hi there!"
+      message: "Hi there!",
+      socket: null
     }),
+    mounted() {
+      console.log("mounted");
+      this.socket = new WebSocket("ws://localhost:8083/api/notifications/notifications");
+      this.socket.onmessage = (message) => {
+        this.receiveMessage(message);
+      };
+      this.socket.onerror = (message) => {
+        console.log("ERROR WITH WEBSOCKET", message);
+      };
+    },
     methods: {
       publishMessage() {
         console.log(this.message);
@@ -26,6 +37,14 @@
           .catch(error => {
             console.log("ERROR: ", error);
           })
+      },
+      receiveMessage(message) {
+        console.log("MESSAGE RECEIVED!", message.data);
+        let toast = this.$toasted.show(message.data, { 
+          theme: "toasted-primary", 
+          position: "bottom-right", 
+          duration : 5000
+        });
       }
     }
   }

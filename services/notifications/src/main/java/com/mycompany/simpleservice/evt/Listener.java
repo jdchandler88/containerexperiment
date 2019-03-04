@@ -29,10 +29,15 @@ public class Listener implements MessageListener {
 	@Inject
 	private NotificationStorage notificationStorage;
 	
+	@Inject
+	private WebsocketSessionManager sessionManager;
+	
 	@Override
 	public void onMessage(Message message) {
 		try {
-			this.notificationStorage.storeNotification(message.getBody(String.class));
+			String body = message.getBody(String.class);
+			this.notificationStorage.storeNotification(body);
+			this.sessionManager.publish(body);
 		} catch (JMSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
