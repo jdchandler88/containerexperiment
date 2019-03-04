@@ -1,7 +1,7 @@
 package com.mycompany.simpleservice.evt;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.ActivationConfigProperty;
+import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -26,20 +26,17 @@ import javax.jms.MessageListener;
 	    })
 public class Listener implements MessageListener {
 
-	
-	@PostConstruct
-	public void init() {
-		System.out.println("");
-	}
+	@EJB
+	private NotificationStorage notificationStorage;
 	
 	@Override
 	public void onMessage(Message message) {
 		try {
-			System.out.println("SIMPLE SERVICE RECEIVED MESSAGE--" + message.getBody(String.class));
+			this.notificationStorage.storeNotification(message.getBody(String.class));
 		} catch (JMSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.err.println("SIMPLE SERVICE ERROR RECEIVING MESSAGE--" + e.getMessage());
+			System.err.println("NOTIFICATIONS PROJ ERROR RECEIVING MESSAGE--" + e.getMessage());
 		}
 	}
 
