@@ -7,7 +7,7 @@ package com.mycompany.simpleservice.svc;
 
 import java.util.List;
 
-import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -25,7 +25,7 @@ import com.mycompany.simpleservice.evt.NotificationStorage;
 @Consumes(MediaType.APPLICATION_JSON)
 public class NotificationsService {
  
-	@EJB
+	@Inject
 	private NotificationStorage publisher;
 	
     @Path("")

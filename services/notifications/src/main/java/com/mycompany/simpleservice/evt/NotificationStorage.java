@@ -1,13 +1,12 @@
 package com.mycompany.simpleservice.evt;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Stateful;
+import javax.enterprise.context.ApplicationScoped;
 
-@Stateful
-public class NotificationStorage implements Serializable {
+@ApplicationScoped
+public class NotificationStorage {
 
 	
 	private List<String> notifications = new ArrayList<>();
