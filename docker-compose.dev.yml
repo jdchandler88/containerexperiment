@@ -9,6 +9,9 @@ services:
   notifications:
     ports: 
       - "8083:8080"
+  users:
+    ports: 
+      - "8084:8080"
   proxy:
   jms:
     ports:

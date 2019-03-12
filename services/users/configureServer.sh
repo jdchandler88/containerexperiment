@@ -22,8 +22,9 @@ echo "=> Server started...."
 `$JBOSS_CLI -c "/subsystem=messaging-activemq/server=default:write-attribute(name=security-enabled,value=false)"`
 
 #add mysql database connection
-`$JBOSS_CLI -c "deploy mysql-connector-java-8.0.15.jar"`
-`$JBOSS_CLI -c "data-source add --name=usersSource --jndi-name=java:/jdbc/users-database --driver-name=mysql-connector-java-8.0.15.jar --connection-url=jdbc:mysql://db:3306/books --user-name=books_user --password=books_secret"`
+`$JBOSS_CLI -c "deploy mysql-connector-java-8.0.15.jar" > out.txt`
+`$JBOSS_CLI -c "data-source add --name=userSource --jndi-name=java:/jdbc/users-database --driver-name=mysql-connector-java-8.0.15.jar --driver-class=com.mysql.jdbc.Driver --connection-url=jdbc:mysql://db:3306/users --user-name=users_user --password=users_secret" > out.txt`
+cat out.txt
 
 
 echo "=> Shutting down WildFly"

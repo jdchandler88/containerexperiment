@@ -20,6 +20,7 @@ MAINTAINER "FirstName LastName" "emailaddress@gmail.com"
 
 #configure server to use JMS bridge TODO: pass in parameters (remote host, remote topic, etc.)
 COPY configureServer.sh .
+COPY mysql-connector-java-8.0.15.jar .
 USER root
 RUN chmod +x configureServer.sh
 USER jboss
@@ -27,6 +28,6 @@ RUN ./configureServer.sh standalone standalone-full.xml
 
 #copy service
 #COPY --from=builder /app/build/libs/SimpleService.war $JBOSS_HOME/standalone/deployments
-COPY build/libs/SimpleService.war $JBOSS_HOME/standalone/deployments
+COPY build/libs/users.war $JBOSS_HOME/standalone/deployments
 
 ENTRYPOINT $JBOSS_HOME/bin/standalone.sh -c standalone-full.xml -b $HOSTNAME -bmanagement $HOSTNAME
