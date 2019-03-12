@@ -13,11 +13,6 @@ services:
   jms:
     ports:
       - "8081:8080"
-  keycloakdb:
+  db:
     ports:
       - "3306:3306"
-  keycloak:
-    ports:
-      - "8082:8080"
-      - "9992:9990"
-

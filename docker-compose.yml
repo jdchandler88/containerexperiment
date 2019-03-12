@@ -60,7 +60,6 @@ services:
       - webnet
     depends_on:
       - ui
-      - keycloak
       - simple
       - notifications
   jms:
@@ -69,39 +68,19 @@ services:
       - "8080"
     networks:
       - webnet
-  keycloakdb:
-    image: mysql:5
+  db:
+    image: mysql
     command: --default-authentication-plugin=mysql_native_password
     expose:
       - "3306"
     restart: always
-    environment: 
-      - MYSQL_DATABASE=keycloak
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_USER=keycloakuser
-      - MYSQL_PASSWORD=keycloakuserpassword
     volumes:
-      - "keycloakdbdata:/var/lib/mysql"
+      - "dbdata:/var/lib/mysql"
     networks:
       - webnet
-  keycloak:
-    image: jboss/keycloak
-    expose: 
-      - "8080"
-    networks:
-      - webnet
-    environment:
-      - MYSQL_ADDR=keycloakdb
-      - DB_DATABASE=keycloak
-      - DB_USER=keycloakuser
-      - DB_PASSWORD=keycloakuserpassword
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=admin123
-    depends_on:
-      - keycloakdb
 networks:
   frontend:
   webnet:
 volumes:
-  keycloakdbdata:
+  dbdata:
 

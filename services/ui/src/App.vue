@@ -1,5 +1,15 @@
 <template>
   <v-app>
+    <Login 
+      @login="loggedIn" 
+      :oidApiPath="this.oidApiPath"
+      usernameParameterName="username"
+      passwordParameterName="password"
+      :otherParams="{
+          grant_type: 'password',
+          client_id: 'admin-cli'
+        }"
+    ></Login>
     <v-toolbar app>
       <v-toolbar-title class="headline text-uppercase">
         <span>Vuetify</span>
@@ -23,15 +33,25 @@
 
 <script>
 import HelloWorld from './components/HelloWorld'
-
+import Login from './components/Login'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
+    Login
   },
   data () {
     return {
-      //
+    }
+  },
+  methods: {
+    loggedIn() {
+      console.log("oooooh");
+    }
+  },
+  computed: {
+    oidApiPath() {
+      return process.env.VUE_APP_AUTH_HOST + process.env.VUE_APP_AUTHENTICATION_PATH;
     }
   }
 }
