@@ -15,7 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.mycompany.simpleservice.evt.Publisher;
-import com.mycompany.simpleservice.svc.dto.NewUserRequestDto;
+import com.mycompany.simpleservice.svc.entity.User;
+import com.mycompany.simpleservice.svc.facade.UserFacade;
 
 /**
  *
@@ -27,24 +28,27 @@ import com.mycompany.simpleservice.svc.dto.NewUserRequestDto;
 public class UserService {
  
 	@EJB
+	private UserFacade userFacade;
+	
+	@EJB
 	private Publisher publisher;
 	
     @Path("")
     @GET
     public Response getSimple() {
-        return Response.ok().entity("oh hai there from user service!").build();
+        return Response.ok().entity(userFacade.findAll()).build();
     }
     
     @Path("/count")
     @GET
     public Response getCount() {
-    	int count = 0;
+    	int count = userFacade.findAll().size();
     	return Response.ok().entity(count).build();
     }
     
     @Path("")
     @POST
-    public void publishMessage(NewUserRequestDto newUser) {
+    public void publishMessage(User newUser) {
     	
     	//publish a new user alert
     	publisher.publish(newUser.toString());
