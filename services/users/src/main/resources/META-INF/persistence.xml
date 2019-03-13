@@ -4,7 +4,7 @@
     <persistence-unit name="users" transaction-type="JTA">
     <jta-data-source>java:/jdbc/users-database</jta-data-source>
         <properties>
-	        <property name = "hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+	        <property name = "hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
             <property name="hibernate.hbm2ddl.auto" value="create" />
         </properties>
     </persistence-unit>
