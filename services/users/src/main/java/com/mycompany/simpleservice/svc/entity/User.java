@@ -5,8 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 
 @Entity
+@NamedQuery(
+    name = "User.findByName",
+    query = "SELECT u FROM User u where u.username = :username")
 public class User {
 	
 	@Id

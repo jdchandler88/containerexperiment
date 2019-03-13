@@ -1,6 +1,6 @@
 package com.mycompany.simpleservice.svc.dto;
 
-public class NewUserRequestDto {
+public class UserRequestDto {
 
 	private String username;
 	

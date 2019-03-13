@@ -46,18 +46,17 @@ import axios from 'axios'
          loginClicked() {
              //login call
              console.log("login clicked! loginPath=" + this.oidApiPath, ", usernamParameter:",  this.usernameParameterName, ", passwordParameterName: ", this.passwordParameterName, ", other params: ", this.otherParams);
-            var data = new FormData();
+            var data = {};
             data[this.usernameParameterName] = this.username;
             data[this.passwordParameterName] = this.password;
             for (var key in this.otherParams) {
                 console.log("key", key, "value", this.otherParams[key]);
                 data[key] = this.otherParams[key];
             }
-            console.log("post data: ", this.encodeForm(data), this.otherParams);
-            axios.post(this.oidApiPath, this.encodeForm(data), 
-                { 
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded' }
-                })
+            // console.log("post data: ", this.encodeForm(data), this.otherParams);
+            console.log("post data: ", data, this.otherParams);
+            // axios.post(this.oidApiPath, this.encodeForm(data), 
+            axios.post(this.oidApiPath, data)
                 .then(res => {
                     console.log("respone!: ", res);
                 })
