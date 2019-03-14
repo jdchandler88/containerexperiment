@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <Login 
-      @login="loggedIn" 
+      @loginSuccess="loginSuccess" 
+      @loginFailure="loginFailure"
       :oidApiPath="this.oidApiPath"
       usernameParameterName="username"
       passwordParameterName="password"
@@ -42,8 +43,11 @@ export default {
     }
   },
   methods: {
-    loggedIn() {
-      console.log("oooooh");
+    loginSuccess(data) {
+      console.log("oooooh", data);
+    },
+    loginFailure() {
+      console.log("you fucked up");
     }
   },
   computed: {

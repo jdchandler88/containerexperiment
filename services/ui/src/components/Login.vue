@@ -44,8 +44,7 @@ import axios from 'axios'
      },
      methods: {
          loginClicked() {
-             //login call
-             console.log("login clicked! loginPath=" + this.oidApiPath, ", usernamParameter:",  this.usernameParameterName, ", passwordParameterName: ", this.passwordParameterName, ", other params: ", this.otherParams);
+            //login call
             var data = {};
             data[this.usernameParameterName] = this.username;
             data[this.passwordParameterName] = this.password;
@@ -53,21 +52,13 @@ import axios from 'axios'
                 console.log("key", key, "value", this.otherParams[key]);
                 data[key] = this.otherParams[key];
             }
-            // console.log("post data: ", this.encodeForm(data), this.otherParams);
-            console.log("post data: ", data, this.otherParams);
-            // axios.post(this.oidApiPath, this.encodeForm(data), 
             axios.post(this.oidApiPath, data)
                 .then(res => {
-                    console.log("respone!: ", res);
+                    this.$emit("loginSuccess", res.data);
                 })
                 .catch(err => {
-                    console.log("error!: ", err);
+                    this.$emit("loginFailure");
                 });
-         },
-         encodeForm(data) {
-            return Object.keys(data)
-            .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
-            .join('&');
          }
      }
  }
