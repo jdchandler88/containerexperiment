@@ -7,6 +7,7 @@ package com.mycompany.simpleservice.svc;
 
 import java.util.AbstractMap;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -22,6 +23,8 @@ import com.mycompany.simpleservice.svc.dto.UserRequestDto;
 import com.mycompany.simpleservice.svc.entity.User;
 import com.mycompany.simpleservice.svc.facade.UserFacade;
 import com.mycompany.simpleservice.util.PasswordUtil;
+
+import util.rest.TokenUtil;
 
 /**
  *
@@ -65,23 +68,22 @@ public class UserService {
     @POST
     public Response login(UserRequestDto user) {
     	try {
-    		System.out.println("authenticating user: " + user.getUsername());
         	User authenticatedUser = userFacade.getByUserName(user.getUsername());
-        	System.out.println("user: " + user.getUsername() + " found. authenticating...");
         	String expectedHash = authenticatedUser.getPasswordHash();
-        	System.out.println("EXPECTED HASH: " + expectedHash);
         	String actualHash = PasswordUtil.hash(user.getPassword(), authenticatedUser.getPasswordSalt());
-        	System.out.println("ACTUAL HASH: " + actualHash);
         	if (expectedHash.equals(actualHash)) {
-        		return Response.ok().entity(new AbstractMap.SimpleEntry("result", "ok")).build();
+        		String accessToken = TokenUtil.issueToken(user.getUsername(), new String[] {}, 30);
+        		String refreshToken = TokenUtil.issueToken(user.getUsername(), new String[] {}, 60*30);
+        		Map<String, String> returnValues = new HashMap<>();
+        		returnValues.put("accessToken", accessToken);
+        		returnValues.put("refreshToken", refreshToken);
+        		return Response.ok().entity(returnValues).build();
         	} else {
         		return Response.status(Response.Status.UNAUTHORIZED.getStatusCode()).build();
         	}
-        	
     	} catch (Exception e) {
     		return Response.serverError().entity(e).build();
     	}
-    	
     	
     	
     }

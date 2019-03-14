@@ -37,6 +37,7 @@ dependencies {
     compile 'org.apache.activemq:artemis-jms-client:2.6.4'
     compile 'org.jboss.xnio.netty:netty-xnio-transport:0.1.6.Final'
     compile 'org.bouncycastle:bcprov-jdk15on:1.61'
+    compile project(":util")
 }
 
 build.finalizedBy war

@@ -5,10 +5,7 @@
       :oidApiPath="this.oidApiPath"
       usernameParameterName="username"
       passwordParameterName="password"
-      :otherParams="{
-          grant_type: 'password',
-          client_id: 'admin-cli'
-        }"
+      :otherParams="{}"
     ></Login>
     <v-toolbar app>
       <v-toolbar-title class="headline text-uppercase">
