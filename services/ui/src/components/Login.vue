@@ -46,21 +46,22 @@ import axios from 'axios'
          loginClicked() {
             //login call
             var data = {};
-            data[this.usernameParameterName] = this.username;
-            data[this.passwordParameterName] = this.password;
-            for (var key in this.otherParams) {
-                console.log("key", key, "value", this.otherParams[key]);
-                data[key] = this.otherParams[key];
-            }
+            data["username"] = this.username;
+            data["password"] = this.password;
             axios.post(this.oidApiPath, data)
                 .then(res => {
-                    this.$emit("loginSuccess", res.data);
+                  this.$router.push("/home");
                 })
                 .catch(err => {
-                    this.$emit("loginFailure");
+                  console.log("login failure.");
                 });
          }
-     }
+     },
+    computed: {
+      oidApiPath() {
+        return process.env.VUE_APP_AUTH_HOST + process.env.VUE_APP_AUTHENTICATION_PATH;
+      }
+    }
  }
 </script>
 
