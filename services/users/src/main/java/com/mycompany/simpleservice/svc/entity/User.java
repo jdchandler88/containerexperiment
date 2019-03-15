@@ -1,11 +1,18 @@
 package com.mycompany.simpleservice.svc.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @NamedQuery(
@@ -26,7 +33,17 @@ public class User {
 	
 	@Column
 	private String passwordSalt;
-
+	
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "usersInRole")
+	@JsonBackReference
+	private Set<Role> roles = new HashSet<>();
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -49,6 +66,14 @@ public class User {
 	
 	public void setPasswordSalt(String passwordSalt) {
 		this.passwordSalt = passwordSalt;
+	}
+	
+	public Set<Role> getRoles() {
+		return roles;
+	}
+	
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 	
 }

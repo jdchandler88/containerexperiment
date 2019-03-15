@@ -32,6 +32,9 @@ This is an experiment/overview of a microservice app. It will be managed by Dock
   * Resources
     * https://developer.jboss.org/thread/267699. This is EXACTLY what helped solve my problem. Before this, the MDB was timing out when trying to connect to remote server. the property that was used was "http-upgrade-enabled"; switched to "httpUpgradeEnabled"...voila
     *  www.mastertheboss.com/jboss-server/jboss-jms/connecting-to-an-external-wildfly-jms-server. This is great information and should help move the apps in the right direction in terms of externalizing configuration. For now, configuration is hard-coded. A level of indirection should be added such that the code points to a resource which is configured externally.
+* User Service
+  * Users can be associated with Roles. Roles can have many users, and users can belong to many roles. Therefore, it is a many-to-many relationship. 
+  * The problem is that the relationship is bi-directional and, if we want to return the entity directly using the server, there is an infinite recursion issue when serializing to JSON. This resource helped solve that problem: https://stackoverflow.com/questions/3325387/infinite-recursion-with-jackson-json-and-hibernate-jpa-issue
 * General Workflow
   * Developing with docker-compose is actually pretty nice. You can re-build and deploy a container/service without taking down the entire application. The way to do so: docker-compose up -d --build {{service_name}}. Note that for these services, when the compilation takes place outside of the container (gradle clean build, npm run build) that must be run before the docker-compose command. 
 * Proxy

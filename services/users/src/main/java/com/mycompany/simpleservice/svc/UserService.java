@@ -5,22 +5,25 @@
  */
 package com.mycompany.simpleservice.svc;
 
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.mycompany.simpleservice.evt.Publisher;
 import com.mycompany.simpleservice.svc.dto.UserRequestDto;
+import com.mycompany.simpleservice.svc.entity.Role;
 import com.mycompany.simpleservice.svc.entity.User;
+import com.mycompany.simpleservice.svc.facade.RoleFacade;
 import com.mycompany.simpleservice.svc.facade.UserFacade;
 import com.mycompany.simpleservice.util.PasswordUtil;
 
@@ -37,6 +40,9 @@ public class UserService {
  
 	@EJB
 	private UserFacade userFacade;
+	
+	@EJB
+	private RoleFacade roleFacade;
 	
 	@EJB
 	private Publisher publisher;
@@ -84,8 +90,23 @@ public class UserService {
     	} catch (Exception e) {
     		return Response.serverError().entity(e).build();
     	}
-    	
-    	
+    }
+    
+    @Path("/roles")
+    @GET
+    public Response getRoles() {
+    	return Response.ok().entity(roleFacade.findAll()).build();
+    }
+    
+    @Path("/{username}/roles")
+    @GET
+    public Response getUserRoles(@PathParam("username") String username) {
+    	try {
+    		Set<Role> userRoles = userFacade.getByUserName(username).getRoles();
+    		return Response.ok().entity(userRoles).build();
+    	} catch (Exception e) {
+    		return Response.serverError().build();
+    	}
     }
     
 }
