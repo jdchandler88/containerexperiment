@@ -31,7 +31,6 @@
 import axios from 'axios'
  export default {
      props: [
-         'oidApiPath',
          'usernameParameterName',
          'passwordParameterName',
          'otherParams'
@@ -50,6 +49,14 @@ import axios from 'axios'
             data["password"] = this.password;
             axios.post(this.oidApiPath, data)
                 .then(res => {
+                  this.$store.commit('setAccessToken', {
+                    accessToken: res.data.accessToken
+                  });
+                  this.$store.commit('setRefreshToken', {
+                    refreshToken: res.data.refreshToken
+                  });
+                  var roles = this.$store.getters.roles;
+                  console.log("roles", roles);
                   this.$router.push("/home");
                 })
                 .catch(err => {

@@ -6,9 +6,7 @@ import HelloWorld from './components/HelloWorld.vue'
 import Vuetify from 'vuetify'
 import Toasted from 'vue-toasted';
 import VueRouter from 'vue-router'
-
-
-
+import store from './store'
 
 Vue.config.productionTip = false
 
@@ -35,5 +33,6 @@ import 'vuetify/dist/vuetify.min.css'
 
 new Vue({
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')
