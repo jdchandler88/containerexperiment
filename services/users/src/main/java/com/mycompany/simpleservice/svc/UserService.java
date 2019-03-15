@@ -6,8 +6,10 @@
 package com.mycompany.simpleservice.svc;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -78,8 +80,11 @@ public class UserService {
         	String expectedHash = authenticatedUser.getPasswordHash();
         	String actualHash = PasswordUtil.hash(user.getPassword(), authenticatedUser.getPasswordSalt());
         	if (expectedHash.equals(actualHash)) {
-        		String accessToken = TokenUtil.issueToken(user.getUsername(), new String[] {}, 30);
-        		String refreshToken = TokenUtil.issueToken(user.getUsername(), new String[] {}, 60*30);
+        		List<String> roles = authenticatedUser.getRoles().stream().map(role -> role.getName()).collect(Collectors.toList());
+        		String[] rolesArray = new String[roles.size()];
+        		roles.toArray(rolesArray);
+        		String accessToken = TokenUtil.issueToken(user.getUsername(), rolesArray, 30);
+        		String refreshToken = TokenUtil.issueToken(user.getUsername(), rolesArray, 60*30);
         		Map<String, String> returnValues = new HashMap<>();
         		returnValues.put("accessToken", accessToken);
         		returnValues.put("refreshToken", refreshToken);
