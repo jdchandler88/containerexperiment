@@ -11,13 +11,24 @@ routes:
 
 <template>
   <v-app>
-    <router-view></router-view>
+    <v-container>
+      <v-layout v-if="isAuthenticated">
+        <v-flex>
+          <v-btn to="/home">Home</v-btn>
+          <v-btn v-for="route in customRoutes" :key="route.name" :to="route.path">{{route.name}}</v-btn>
+        </v-flex>
+      </v-layout>
+    </v-container>
+    
+    <router-view @authenticated="authenticated"></router-view>
   </v-app>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld'
 import Login from './components/Login'
+import ManageUsers from './components/ManageUsers';
+import ManageRoles from './components/ManageRoles';
 export default {
   name: 'App',
   components: {
@@ -26,15 +37,47 @@ export default {
   },
   data () {
     return {
+      isAuthenticated: false,
+      customRoutes: []
     }
   },
   methods: {
-    loginSuccess(data) {
-      console.log("oooooh", data);
-      this.$router.push("/home");
-    },
-    loginFailure() {
-      console.log("you fucked up");
+    authenticated(result) {
+      console.log("login result: ", result);
+      if (result.success) {
+        //store token information
+        this.$store.commit('setAccessToken', {
+          accessToken: result.data.accessToken
+        });
+        this.$store.commit('setRefreshToken', {
+          refreshToken: result.data.refreshToken
+        });
+        var roles = this.$store.getters.roles;
+        this.isAuthenticated = true;
+        //configure application for noral user vs. admin
+        console.log("roles", roles);
+        console.log("prerouter", this.$router);
+        if (roles.includes("Administrators")) {
+          this.customRoutes = [
+            {
+              path: '/manageUsers',
+              name: 'ManageUsers',
+              component: ManageUsers
+            },
+            {
+              path: '/manageRoles',
+              name: 'ManageRoles', 
+              component: ManageRoles
+            }
+          ];
+          this.$router.addRoutes(this.customRoutes);
+          console.log("postrouter", this.$router);
+        }
+        //go home
+        this.$router.push("/home");
+      } else {
+        alert("Invalid credentials entered.");
+      }
     }
   },
   computed: {

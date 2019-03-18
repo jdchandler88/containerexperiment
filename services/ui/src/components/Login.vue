@@ -49,18 +49,15 @@ import axios from 'axios'
             data["password"] = this.password;
             axios.post(this.oidApiPath, data)
                 .then(res => {
-                  this.$store.commit('setAccessToken', {
-                    accessToken: res.data.accessToken
+                  this.$emit('authenticated', {
+                    success: true,
+                    data: res.data
                   });
-                  this.$store.commit('setRefreshToken', {
-                    refreshToken: res.data.refreshToken
-                  });
-                  var roles = this.$store.getters.roles;
-                  console.log("roles", roles);
-                  this.$router.push("/home");
                 })
                 .catch(err => {
-                  console.log("login failure.");
+                  this.$emit('authenticated', {
+                    success: false
+                  });
                 });
          }
      },
