@@ -14,13 +14,16 @@ routes:
     <v-container>
       <v-layout v-if="isAuthenticated">
         <v-flex>
-          <v-btn to="/home">Home</v-btn>
-          <v-btn v-for="route in customRoutes" :key="route.name" :to="route.path">{{route.name}}</v-btn>
+          <v-card>
+            <v-btn to="/home">Home</v-btn>
+            <v-btn v-for="route in customRoutes" :key="route.name" :to="route.path">{{route.name}}</v-btn>
+          </v-card>
         </v-flex>
       </v-layout>
+      <router-view @authenticated="authenticated"></router-view>
     </v-container>
     
-    <router-view @authenticated="authenticated"></router-view>
+    
   </v-app>
 </template>
 
@@ -76,7 +79,7 @@ export default {
         //go home
         this.$router.push("/home");
       } else {
-        alert("Invalid credentials entered.");
+        alert("Invalid credentials entered.", result.data);
       }
     }
   },

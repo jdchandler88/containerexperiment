@@ -56,14 +56,15 @@ import axios from 'axios'
                 })
                 .catch(err => {
                   this.$emit('authenticated', {
-                    success: false
+                    success: false,
+                    data: err
                   });
                 });
          }
      },
     computed: {
       oidApiPath() {
-        return process.env.VUE_APP_AUTH_HOST + process.env.VUE_APP_AUTHENTICATION_PATH;
+        return process.env.VUE_APP_USERS_HOST + process.env.VUE_APP_AUTHENTICATION_PATH;
       }
     }
  }

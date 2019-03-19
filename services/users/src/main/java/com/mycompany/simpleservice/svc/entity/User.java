@@ -29,6 +29,12 @@ public class User {
 	private String username;
 	
 	@Column
+	private String firstName;
+	
+	@Column
+	private String lastName;
+	
+	@Column
 	private String passwordHash;
 	
 	@Column
@@ -37,6 +43,15 @@ public class User {
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "usersInRole")
 	@JsonBackReference
 	private Set<Role> roles = new HashSet<>();
+	
+	@Column
+	private String bio;
+	
+	@Column
+	private String avatarUrl;
+	
+	@Column
+	private String phone;
 	
 	public int getId() {
 		return id;
@@ -76,4 +91,43 @@ public class User {
 		this.roles = roles;
 	}
 	
+	public String getBio() {
+		return bio;
+	}
+	
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+	
+	public String getAvatarUrl() {
+		return avatarUrl;
+	}
+	
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
+	}
+	
+	public String getPhone() {
+		return phone;
+	}
+	
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 }
